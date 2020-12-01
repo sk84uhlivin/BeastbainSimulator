@@ -5,7 +5,7 @@ import numpy as np
 # from matplotlib import pyplot as plt
 
 
-def regular_shade_drop(size):
+def regular_shade_drop(size, trails=1):
     return np.random.choice(["None", "Medicinal Herb", "Old Schoolbook", "Dented Metal Bat"], size=size,
                             p=[0.74, 0.15, 0.1, 0.01])
 
@@ -30,7 +30,8 @@ def boar_drop(size):
 
 
 def sg01_drop(size):
-    return np.random.choice(["Dented Metal Plate", "Broken Arm", "Broken Antenna"], size=size, p=[0.5, 0.3, 0.2])
+    # replaced Dented Metal Plate with Dented Metal Bat due to Dented Metal Plate not beeing in the conversion dict
+    return np.random.choice(["Dented Metal Bat", "Broken Arm", "Broken Antenna"], size=size, p=[0.5, 0.3, 0.2])
 
 
 def sg10_drop(size):
