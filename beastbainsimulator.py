@@ -140,13 +140,15 @@ def drops_after_shop(trails):
     return money
 
 
-runs = 100000
-results_before_shop = drops_before_shop(runs)
-results_after_shop = drops_after_shop(runs)
+sims = int(input("How many simulations? "))
+print(f"Processing {sims} simulations...")
+print()
+results_before_shop = drops_before_shop(sims)
+results_after_shop = drops_after_shop(sims)
 
 # ### Full simulation with before/after shop + funds
 
 results_all = results_before_shop + results_after_shop - 400
 
-good = [result for result in results_all if result >= 16800]
-print(f"{len(good)} out of {runs}.")
+good_runs = [result for result in results_all if result >= 16800]
+print(f"{len(good_runs)} out of {sims}, or {round((len(good_runs) / sims * 100), 3)}% successful Beastbain attempts.")
