@@ -2,6 +2,7 @@
 
 import numpy as np
 
+
 # ## Simulation
 
 
@@ -105,12 +106,29 @@ def get_returns(drops):
 
 
 def drops_before_shop(trails):
+    liver_runs = []
     regular_shade_drops_pre = regular_shade_drop(size=4, trails=trails, preshop=True)
     regular_shade_drops = regular_shade_drop(size=8, trails=trails)
     regular_shade_2_drops = regular_shade_2_drop(size=4, trails=trails)
     large_shade_drops = large_shade_drop(size=10, trails=trails)
     large_shade_2_drops = large_shade_drop(size=2, trails=trails)
     boar_drops = boar_drop(size=1, trails=trails)
+
+    for run in boar_drops:
+        for drop in run:
+            if drop == 'Boar Liver':
+                liver_runs.append(True)
+            else:
+                liver_runs.append(False)
+    """
+    print("Length")
+    print(len(boar_drops))
+    print(len(liver_runs))
+
+    print("Array")
+    print(boar_drops)
+    print(liver_runs)
+    """
 
     money = get_returns(regular_shade_drops_pre)
     money += get_returns(regular_shade_drops)
@@ -119,7 +137,7 @@ def drops_before_shop(trails):
     money += get_returns(large_shade_2_drops)
     money += get_returns(boar_drops)
     money += 20  # for the LURE
-    return money
+    return money, liver_runs
 
 
 # ### After Shop
@@ -140,15 +158,21 @@ def drops_after_shop(trails):
     return money
 
 
+extra_purchase = 0
 sims = int(input("How many simulations? "))
-print(f"Processing {sims} simulations...")
-print()
-results_before_shop = drops_before_shop(sims)
+print(f"Processing {sims} simulations...\n")
+results_before_shop, liver_runs = drops_before_shop(sims)
 results_after_shop = drops_after_shop(sims)
 
 # ### Full simulation with before/after shop + funds
 
-results_all = results_before_shop + results_after_shop - 400
+results_all = results_before_shop + results_after_shop - 400 - (extra_purchase * 500)
 
 good_runs = [result for result in results_all if result >= 16800]
-print(f"{len(good_runs)} out of {sims}, or {round((len(good_runs) / sims * 100), 3)}% successful Beastbain attempts.")
+actual_liver_runs = 0
+for index, result in enumerate(results_all):
+    if result >= 16800 and liver_runs[index]:
+        actual_liver_runs += 1
+
+print(f"{len(good_runs)} out of {sims}, or {round((len(good_runs) / sims * 100), 5)}% successful Beastbain attempts,")
+print(f"{round((actual_liver_runs / sims * 100), 5)}% successful runs with Beastbain and Boar Liver.")
